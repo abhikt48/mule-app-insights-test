@@ -1,0 +1,60 @@
+{
+	"connectionString": "InstrumentationKey=*****",
+    "role": {
+      "name": "http-codeless-agent"
+    },
+    "preview":{
+       "captureControllerSpans": false,
+       "instrumentation":{
+          "grizzly":{
+             "enabled":true
+          }
+       }
+       ,
+       "sampling": {
+         "overrides": [
+         {
+           "telemetryType": "request",
+           "attributes": [{
+              "key": "http.url",
+              "value": ".*/ping",
+              "matchType": "regexp"
+            }],
+            "percentage": 0
+        },
+        {
+				"telemetryType": "request",
+				"attributes": [
+					{
+						"key": "url.path",
+						"value": "/mule/domains",
+						"matchType": "strict"
+					}
+				],
+				"percentage": 0
+			},
+			{
+				"telemetryType": "request",
+				"attributes": [
+					{
+						"key": "url.path",
+						"value": "/mule/applications",
+						"matchType": "strict"
+					}
+				],
+				"percentage": 0
+			}]
+       }
+    },
+    "instrumentation":{
+       "mongo":{
+          "enabled":true
+       },
+       "jdbc":{
+          "enabled":true
+       }
+    },
+    "sampling": {
+         "percentage": "100"
+    }
+ }

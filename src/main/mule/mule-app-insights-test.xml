@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="7ad308a0-2545-4ff9-9208-28ffaf841286" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_prism_mock" doc:name="HTTP Request configuration" doc:id="bd80fc41-b073-4cde-a66d-50fb6fc597f7" >
+		<http:request-connection host="localhost" port="4010" />
+	</http:request-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="b899eb52-2a04-4d97-bf31-37f206df8b1f" >
+		<http:request-connection host="localhost" port="8081" />
+	</http:request-config>
+	<flow name="app-insights-test-http-in-outFlow" doc:id="5868c4a6-5d3d-47de-9bbf-7d5e0bd3b8b7" >
+		<http:listener doc:name="Listener" doc:id="873dca41-9bde-467c-8316-059d599d1857" config-ref="HTTP_Listener_config" path="ai/2"/>
+		<logger level="INFO" doc:name="Log ai/2" doc:id="7e789c15-c3fe-44c6-ac2f-4027aa3c6da2" message="Log ai/2"/>
+		<http:request method="GET" doc:name="Request" doc:id="fa293d18-118c-4802-9926-9e160348e0c1" config-ref="HTTP_Request_configuration" path="moo"/>
+	</flow>
+	<flow name="mule-app-insights-testFlow" doc:id="710bf7a2-1d19-437f-83e5-8ba5d54d7804" >
+		<http:listener doc:name="Listener" doc:id="46d51c78-8b74-4f78-a3b1-f7f3098ad244" config-ref="HTTP_Listener_config" path="moo"/>
+		<logger level="INFO" doc:name="Logger" doc:id="fe438fb0-f306-4bc9-862d-f30b3e901c82" message="#[message.attributes.headers]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="fdade669-1f3e-4a92-8906-08d4ee7b21e4" message="NESTED"/>
+		<ee:transform doc:name="Transform Message" doc:id="93da83b3-1fdd-4c33-be0e-5a02c1d6ec42" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+    {
+        "id": 7498995503402209,
+        "name": "proident in sit eiusmod",
+        "tag": "veniam non"
+    },
+    {
+        "id": -1133505545079115,
+        "name": "aute",
+        "tag": "minim eiusmod exercitation voluptate"
+    },
+    {
+        "id": -6307480982335395,
+        "name": "mollit Excepteur",
+        "tag": "anim amet enim"
+    },
+    {
+        "id": 4413152162534741,
+        "name": "ut",
+        "tag": "Lorem"
+    }
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>	
+	
+</mule>
